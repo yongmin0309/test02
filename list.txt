@@ -1,0 +1,51 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page import="vo.MemberVo"%>
+<%@ page import="dao.MemberDao"%>
+<%@ page import="java.util.ArrayList"%>
+
+
+<%
+	MemberDao dao = new MemberDao();
+	ArrayList<MemberVo> list = dao.getList();
+%>
+<jsp:include page="/master/header.jsp"/>
+
+<section>
+	<h2>회원목록조회/수정</h2>
+	<table>
+		<tr>
+			<td>회원ID</td>
+			<td>회원명</td>
+			<td>생년월일</td>
+			<td>성별</td>
+			<td>직업</td>
+			<td>메일수신여부</td>
+			<td>자기소개</td>
+			<td>삭제</td>
+		</tr>
+<%
+	if(list != null){
+		for(MemberVo vo : list){	
+%>
+	<tr>
+		<td><a href="/view/update.jsp?userid=<%=vo.getUserid()%>"><%=vo.getUserid() %></a></td>
+		<td><%=vo.getUsername() %></td>
+		<td><%=vo.getJumin() %></td>
+		<td><%=vo.getGender() %></td>
+		<td><%=vo.getJobcd() %></td>
+		<td><%=vo.getMailrcv() %></td>
+		<td><%=vo.getIntro() %></td>
+		<td><%=vo.getIntro() %></td>
+		<td><a href="/view/delete.jsp?userid=<%=vo.getUserid()%>">삭제</a></td>
+	</tr>
+<% 			
+			
+		}
+	}
+%>	
+	</table>
+
+</section>
+
+<jsp:include page="/master/footer.jsp"/>

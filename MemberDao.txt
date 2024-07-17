@@ -1,0 +1,189 @@
+package dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+
+import common.DBUtils;
+import vo.MemberVo;
+
+public class MemberDao {
+	public ArrayList<MemberVo> getList(){
+		ArrayList<MemberVo> list = new ArrayList<MemberVo>();
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			con = DBUtils.getConnection();
+			ps = con.prepareStatement(null);
+			rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				MemberVo vo = new MemberVo();
+				vo.setUserid(rs.getString("userid"));
+				vo.setUserid(rs.getString("username"));
+				vo.setUserid(rs.getString("jumin"));
+				vo.setUserid(rs.getString("gender"));
+				vo.setUserid(rs.getString("jobcd"));
+				vo.setUserid(rs.getString("mailrcv"));
+				vo.setUserid(rs.getString("intro"));
+				list.add(vo);
+			}
+			con.close();
+			ps.close();
+			rs.close();
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		return list;
+	}
+	
+	public ArrayList<MemberVo> getSearch(String choice, String find){
+		ArrayList<MemberVo> list = new ArrayList<MemberVo>();
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			con = DBUtils.getConnection();
+			ps = con.prepareStatement(null);
+			ps.setString(1, "%"+find+"%");
+			rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				MemberVo vo = new MemberVo();
+				vo.setUserid(rs.getString("userid"));
+				vo.setUserid(rs.getString("username"));
+				vo.setUserid(rs.getString("jumin"));
+				vo.setUserid(rs.getString("gender"));
+				vo.setUserid(rs.getString("jobcd"));
+				list.add(vo);
+			}
+			con.close();
+			ps.close();
+			rs.close();
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println(list);
+		return list;
+	}
+	
+	public int input(MemberVo vo) {
+		Connection con = null;
+		PreparedStatement ps = null;
+		int n = 0;
+		
+		try {
+			con = DBUtils.getConnection();
+			ps = con.prepareStatement(null);
+			ps.setString(1, vo.getUserid());
+			ps.setString(1, vo.getUsername());
+			ps.setString(1, vo.getPasswd());
+			ps.setString(1, vo.getJumin());
+			ps.setString(1, vo.getGender());
+			ps.setString(1, vo.getAddress());
+			ps.setString(1, vo.getJobcd());
+			ps.setString(1, vo.getMailrcv());
+			ps.setString(1, vo.getIntro());
+			n = ps.executeUpdate();
+		
+			ps.close();
+			con.close();
+		
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return n;
+	}
+	
+	public MemberVo listOne(String userid) {
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		MemberVo vo = new MemberVo();
+		
+		try {
+			con = DBUtils.getConnection();
+			ps = con.prepareStatement(null);
+			ps.setString(1, userid);
+			rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				vo.setUserid(rs.getString(1));
+				vo.setUsername(rs.getString(2));
+				vo.setPasswd(rs.getString(3));
+				vo.setJumin(rs.getString(4));
+				vo.setGender(rs.getString(5));
+				vo.setAddress(rs.getString(6));
+				vo.setJobcd(rs.getString(7));
+				vo.setMailrcv(rs.getString(8));
+				vo.setIntro(rs.getString(9));
+			}
+			ps.close();
+			con.close();
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return vo;
+	}
+	
+	public int update(MemberVo vo) {
+		Connection con = null;
+		PreparedStatement ps = null;
+		int n = 0;
+		
+		try {
+			con = DBUtils.getConnection();
+			ps = con.prepareStatement(null);
+			
+			
+			ps.setString(1, vo.getUsername());
+			ps.setString(2, vo.getPasswd());
+			ps.setString(3, vo.getJumin());
+			ps.setString(4, vo.getGender());
+			ps.setString(5, vo.getAddress());
+			ps.setString(6, vo.getJobcd());
+			ps.setString(7, vo.getMailrcv());
+			ps.setString(8, vo.getIntro());
+			ps.setString(9, vo.getUserid());
+			n = ps.executeUpdate();
+		
+			ps.close();
+			con.close();
+		
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return n;
+	}
+	public int delete(String userid) {
+		Connection con = null;
+		PreparedStatement ps = null;
+		int n = 0;
+		
+		try {
+			con = DBUtils.getConnection();
+			ps = con.prepareStatement("");
+			ps.setString(1, userid);
+			n = ps.executeUpdate();
+			
+			ps.close();
+			con.close();
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return n;
+	}
+}
